@@ -2,7 +2,7 @@
 
 Aplikasi kalkulator berbasis browser — HTML + CSS + Vanilla JavaScript. Di-deploy ke Tencent Cloud EdgeOne Pages.
 
-**Live:** https://[project-name].edgeone.app
+**Live:** https://kalkulator-y3h9da9j0q.edgeone.dev/
 
 ---
 
