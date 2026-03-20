@@ -46,10 +46,10 @@ Sistem yang dispesifikasikan adalah aplikasi kalkulator yang berjalan sepenuhnya
 
 | Dokumen | Versi | Hubungan |
 |---|---|---|
-| PRD — Kalkulator Simple | v3.0 | Dokumen induk, sumber kebutuhan |
+| PRD — Kalkulator | v3.0 | Dokumen induk, sumber kebutuhan |
 | Wireframe Kalkulator | v1.0 | Referensi tampilan |
 | Test Case Specification | v1.0 | Diturunkan dari SRS ini |
-| Class Diagram v2 | v2.0 | Referensi arsitektur |
+| Class Diagram | v2.0 | Referensi arsitektur |
 
 ---
 
