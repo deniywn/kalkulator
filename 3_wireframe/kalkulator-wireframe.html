@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wireframe Kalkulator Simple</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background: #f5f4f0;
+      color: #2c2c2a;
+      padding: 40px 24px 60px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      max-width: 960px;
+      margin: 0 auto 48px;
+      border-bottom: 2px solid #2c2c2a;
+      padding-bottom: 16px;
+    }
+    .page-header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .page-header .meta {
+      font-size: 12px;
+      color: #5f5e5a;
+      margin-top: 6px;
+    }
+    .page-header .meta span {
+      margin-right: 24px;
+    }
+
+    /* ── LAYOUT GRID ── */
+    .wireframe-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    /* ── SCREEN CARD ── */
+    .screen-card {
+      background: #ffffff;
+      border: 1px solid #b4b2a9;
+    }
+
+    .screen-label {
+      background: #2c2c2a;
+      color: #f5f4f0;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .screen-label .tag {
+      background: #888780;
+      color: #f5f4f0;
+      font-size: 10px;
+      padding: 2px 7px;
+      letter-spacing: 1px;
+    }
+
+    .screen-body {
+      padding: 20px;
+    }
+
+    /* ── WIREFRAME COMPONENT ── */
+    .wf {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #2c2c2a;
+      white-space: pre;
+      background: #fafaf8;
+      border: 1px dashed #b4b2a9;
+      padding: 16px 18px;
+    }
+
+    /* ── ANNOTATION BLOCK ── */
+    .annotations {
+      margin-top: 14px;
+      border-top: 1px solid #e8e6de;
+      padding-top: 12px;
+    }
+    .annotation-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888780;
+      margin-bottom: 8px;
+    }
+    .annotation-item {
+      display: flex;
+      gap: 10px;
+      font-size: 11px;
+      color: #444441;
+      margin-bottom: 5px;
+      line-height: 1.5;
+    }
+    .annotation-item .bullet {
+      color: #888780;
+      flex-shrink: 0;
+    }
+
+    /* ── FULL WIDTH CARD ── */
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    /* ── STATE TABLE ── */
+    .state-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .state-table th {
+      background: #f1efe8;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 7px 12px;
+      text-align: left;
+      border: 1px solid #d3d1c7;
+    }
+    .state-table td {
+      padding: 7px 12px;
+      border: 1px solid #d3d1c7;
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    .state-table tr:nth-child(even) td {
+      background: #fafaf8;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      letter-spacing: 0.5px;
+      margin: 1px 2px 1px 0;
+    }
+    .badge-idle    { background: #D3D1C7; color: #2C2C2A; }
+    .badge-input   { background: #B5D4F4; color: #0C447C; }
+    .badge-op      { background: #CECBF6; color: #3C3489; }
+    .badge-result  { background: #9FE1CB; color: #085041; }
+    .badge-error   { background: #F7C1C1; color: #791F1F; }
+
+    /* ── FLOW SECTION ── */
+    .flow-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .flow-box {
+      font-size: 11px;
+      padding: 6px 12px;
+      border: 1px solid #b4b2a9;
+      background: #fafaf8;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .flow-arrow {
+      font-size: 14px;
+      color: #888780;
+      padding: 0 6px;
+    }
+    .flow-label {
+      font-size: 10px;
+      color: #888780;
+      display: block;
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #e8e6de;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #5f5e5a;
+    }
+    .legend-sym {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #2c2c2a;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .section-divider {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0 0;
+    }
+    .section-divider-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #888780;
+      white-space: nowrap;
+    }
+    .section-divider-line {
+      flex: 1;
+      height: 1px;
+      background: #d3d1c7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1>Wireframe — Kalkulator Simple</h1>
+  <div class="meta">
+    <span>PRD v2.0</span>
+    <span>Platform: Browser (HTML/CSS/JS)</span>
+    <span>Status: Pre-implementation</span>
+    <span>Fidelity: Lo-fi / Text wireframe</span>
+  </div>
+</div>
+
+<div class="wireframe-grid">
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SCREEN 1: STATE IDLE                               -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="screen-card">
+    <div class="screen-label">
+      Screen 1 — State Idle
+      <span class="tag">DEFAULT</span>
+    </div>
+    <div class="screen-body">
+      <div class="wf">┌─────────────────────────┐
+│  KALKULATOR SIMPLE      │
+├─────────────────────────┤
+│  [ ekspresi kosong  ]   │  ← sub display
+│                         │
+│  [         0        ]   │  ← main display
+├─────────────────────────┤
+│  [ C  ]  [ CE ]  [ ÷ ]  │
+│  [ 7  ]  [ 8  ]  [ 9 ]  │
+│  [ 4  ]  [ 5  ]  [ 6 ]  │
+│  [ 1  ]  [ 2  ]  [ 3 ]  │
+│  [ 0        ]  [ . ]    │
+│                [ =  ]   │  ← khusus kanan
+├─────────────────────────┤
+│  [ +  ]  [ -  ]  [ × ]  │
+└─────────────────────────┘</div>
+      <div class="annotations">
+        <div class="annotation-title">Anotasi</div>
+        <div class="annotation-item"><span class="bullet">①</span> Sub display kosong — belum ada ekspresi</div>
+        <div class="annotation-item"><span class="bullet">②</span> Main display menampilkan "0" sebagai nilai awal</div>
+        <div class="annotation-item"><span class="bullet">③</span> Tombol C dan CE aktif meski belum ada input</div>
+        <div class="annotation-item"><span class="bullet">④</span> Tombol 0 mengambil lebar 2 kolom (lebih besar)</div>
+        <div class="annotation-item"><span class="bullet">⑤</span> Operator baris bawah: +  −  ×  (÷ ada di baris atas)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SCREEN 2: STATE INPUT_A                            -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="screen-card">
+    <div class="screen-label">
+      Screen 2 — State Input_A
+      <span class="tag">INPUT ANGKA 1</span>
+    </div>
+    <div class="screen-body">
+      <div class="wf">┌─────────────────────────┐
+│  KALKULATOR SIMPLE      │
+├─────────────────────────┤
+│  [ ekspresi kosong  ]   │  ← sub display
+│                         │
+│  [        84        ]   │  ← menampilkan "84"
+├─────────────────────────┤
+│  [ C  ]  [ CE ]  [ ÷ ]  │
+│  [ 7  ]  [ 8* ]  [ 9 ]  │  ← * = baru ditekan
+│  [ 4* ]  [ 5  ]  [ 6 ]  │  ← * = baru ditekan
+│  [ 1  ]  [ 2  ]  [ 3 ]  │
+│  [ 0        ]  [ . ]    │
+│                [ =  ]   │
+├─────────────────────────┤
+│  [ +  ]  [ -  ]  [ × ]  │
+└─────────────────────────┘</div>
+      <div class="annotations">
+        <div class="annotation-title">Anotasi</div>
+        <div class="annotation-item"><span class="bullet">①</span> User menekan 8 lalu 4 → display menampilkan "84"</div>
+        <div class="annotation-item"><span class="bullet">②</span> Sub display masih kosong — operator belum dipilih</div>
+        <div class="annotation-item"><span class="bullet">③</span> Setiap digit baru di-append ke kanan display</div>
+        <div class="annotation-item"><span class="bullet">④</span> CE aktif → tekan CE hapus digit terakhir (84 → 8)</div>
+        <div class="annotation-item"><span class="bullet">⑤</span> State: INPUT_A, siap menerima operator</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SCREEN 3: STATE OPERATOR_SET                       -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="screen-card">
+    <div class="screen-label">
+      Screen 3 — State Operator_Set
+      <span class="tag">OPERATOR DIPILIH</span>
+    </div>
+    <div class="screen-body">
+      <div class="wf">┌─────────────────────────┐
+│  KALKULATOR SIMPLE      │
+├─────────────────────────┤
+│  [      84 +        ]   │  ← sub display aktif
+│                         │
+│  [        84        ]   │  ← main display tetap
+├─────────────────────────┤
+│  [ C  ]  [ CE ]  [ ÷ ]  │
+│  [ 7  ]  [ 8  ]  [ 9 ]  │
+│  [ 4  ]  [ 5  ]  [ 6 ]  │
+│  [ 1  ]  [ 2  ]  [ 3 ]  │
+│  [ 0        ]  [ . ]    │
+│                [ =  ]   │
+├─────────────────────────┤
+│  [+*]  [ -  ]  [ × ]   │  ← + aktif/terpilih
+└─────────────────────────┘</div>
+      <div class="annotations">
+        <div class="annotation-title">Anotasi</div>
+        <div class="annotation-item"><span class="bullet">①</span> Sub display menampilkan "84 +" — ekspresi sedang berjalan</div>
+        <div class="annotation-item"><span class="bullet">②</span> Main display tetap "84" hingga angka kedua ditekan</div>
+        <div class="annotation-item"><span class="bullet">③</span> Tombol + ditandai aktif/terpilih (bisa pakai highlight)</div>
+        <div class="annotation-item"><span class="bullet">④</span> Tekan operator lain → ganti operator, tidak kalkulasi</div>
+        <div class="annotation-item"><span class="bullet">⑤</span> State: OPERATOR_SET, menunggu angka kedua</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SCREEN 4: STATE INPUT_B                            -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="screen-card">
+    <div class="screen-label">
+      Screen 4 — State Input_B
+      <span class="tag">INPUT ANGKA 2</span>
+    </div>
+    <div class="screen-body">
+      <div class="wf">┌─────────────────────────┐
+│  KALKULATOR SIMPLE      │
+├─────────────────────────┤
+│  [      84 +        ]   │  ← sub display
+│                         │
+│  [        36        ]   │  ← angka kedua
+├─────────────────────────┤
+│  [ C  ]  [ CE ]  [ ÷ ]  │
+│  [ 7  ]  [ 8  ]  [ 9 ]  │
+│  [ 4  ]  [ 5  ]  [ 6 ]  │
+│  [ 1  ]  [ 2  ]  [ 3 ]  │
+│  [ 0        ]  [ . ]    │
+│                [=* ]   │  ← = siap ditekan
+├─────────────────────────┤
+│  [ +  ]  [ -  ]  [ × ]  │
+└─────────────────────────┘</div>
+      <div class="annotations">
+        <div class="annotation-title">Anotasi</div>
+        <div class="annotation-item"><span class="bullet">①</span> Main display berganti ke "36" (angka kedua)</div>
+        <div class="annotation-item"><span class="bullet">②</span> Sub display tetap "84 +" sebagai konteks</div>
+        <div class="annotation-item"><span class="bullet">③</span> Tombol = aktif dan siap dieksekusi</div>
+        <div class="annotation-item"><span class="bullet">④</span> CE aktif → hapus digit terakhir angka kedua</div>
+        <div class="annotation-item"><span class="bullet">⑤</span> State: INPUT_B, siap kalkulasi</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SCREEN 5: STATE RESULT                             -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="screen-card">
+    <div class="screen-label">
+      Screen 5 — State Result
+      <span class="tag">HASIL DITAMPILKAN</span>
+    </div>
+    <div class="screen-body">
+      <div class="wf">┌─────────────────────────┐
+│  KALKULATOR SIMPLE      │
+├─────────────────────────┤
+│  [    84 + 36 =     ]   │  ← ekspresi lengkap
+│                         │
+│  [       120        ]   │  ← hasil kalkulasi
+├─────────────────────────┤
+│  [ C  ]  [ CE ]  [ ÷ ]  │
+│  [ 7  ]  [ 8  ]  [ 9 ]  │
+│  [ 4  ]  [ 5  ]  [ 6 ]  │
+│  [ 1  ]  [ 2  ]  [ 3 ]  │
+│  [ 0        ]  [ . ]    │
+│                [ =  ]   │
+├─────────────────────────┤
+│  [ +  ]  [ -  ]  [ × ]  │
+└─────────────────────────┘</div>
+      <div class="annotations">
+        <div class="annotation-title">Anotasi</div>
+        <div class="annotation-item"><span class="bullet">①</span> Sub display: "84 + 36 =" — riwayat ekspresi lengkap</div>
+        <div class="annotation-item"><span class="bullet">②</span> Main display: "120" — hasil akhir</div>
+        <div class="annotation-item"><span class="bullet">③</span> Tekan operator → 120 jadi operand1 (kalkulasi berantai)</div>
+        <div class="annotation-item"><span class="bullet">④</span> Tekan angka → mulai kalkulasi baru dari awal</div>
+        <div class="annotation-item"><span class="bullet">⑤</span> Tekan = lagi → ulangi operasi (120 + 36 = 156)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SCREEN 6: STATE ERROR                              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="screen-card">
+    <div class="screen-label">
+      Screen 6 — State Error
+      <span class="tag">BAGI NOL</span>
+    </div>
+    <div class="screen-body">
+      <div class="wf">┌─────────────────────────┐
+│  KALKULATOR SIMPLE      │
+├─────────────────────────┤
+│  [     84 ÷ 0 =     ]   │  ← ekspresi penyebab
+│                         │
+│  [      Error!      ]   │  ← pesan error
+├─────────────────────────┤
+│  [C* ]  [--- ]  [---]   │  ← hanya C aktif
+│  [---]  [--- ]  [---]   │  ← semua nonaktif
+│  [---]  [--- ]  [---]   │
+│  [---]  [--- ]  [---]   │
+│  [---------]  [---]     │
+│                [---]    │
+├─────────────────────────┤
+│  [---]  [--- ]  [---]   │  ← semua nonaktif
+└─────────────────────────┘</div>
+      <div class="annotations">
+        <div class="annotation-title">Anotasi</div>
+        <div class="annotation-item"><span class="bullet">①</span> Sub display: "84 ÷ 0 =" — menampilkan ekspresi penyebab error</div>
+        <div class="annotation-item"><span class="bullet">②</span> Main display: "Error!" — teks merah / warna peringatan</div>
+        <div class="annotation-item"><span class="bullet">③</span> Semua tombol dinonaktifkan kecuali C</div>
+        <div class="annotation-item"><span class="bullet">④</span> Tombol "---" = disabled / tidak bisa ditekan</div>
+        <div class="annotation-item"><span class="bullet">⑤</span> Satu-satunya jalan keluar: tekan C → kembali ke IDLE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION DIVIDER                                    -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="section-label" style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#888780;white-space:nowrap;">Detail Komponen</span>
+    <div style="flex:1;height:1px;background:#d3d1c7;"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- DISPLAY COMPONENT DETAIL                          -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="screen-card">
+    <div class="screen-label">
+      Komponen: Display
+      <span class="tag">2 LAYER</span>
+    </div>
+    <div class="screen-body">
+      <div class="wf">┌──────────────────────────────┐
+│  AREA DISPLAY               │
+│                              │
+│  ┌────────────────────────┐  │
+│  │ [ sub display ]        │  │  ← 14px, right-align
+│  │  ekspresi / riwayat    │  │     warna muted/abu
+│  └────────────────────────┘  │
+│                              │
+│  ┌────────────────────────┐  │
+│  │                        │  │
+│  │         0              │  │  ← 32px bold, right-align
+│  │   main display         │  │     warna dominan
+│  └────────────────────────┘  │
+│                              │
+└──────────────────────────────┘
+
+Overflow handling:
+  Jika > 9 digit  → font mengecil otomatis
+  Jika > 15 digit → notasi: 1.23456789e+12</div>
+      <div class="annotations">
+        <div class="annotation-title">Spesifikasi</div>
+        <div class="annotation-item"><span class="bullet">①</span> Sub display: font kecil, rata kanan, warna sekunder</div>
+        <div class="annotation-item"><span class="bullet">②</span> Main display: font besar bold, rata kanan, warna primer</div>
+        <div class="annotation-item"><span class="bullet">③</span> Keduanya tidak bisa di-edit langsung oleh user (read-only)</div>
+        <div class="annotation-item"><span class="bullet">④</span> Overflow: font mengecil jika angka terlalu panjang</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- BUTTON GRID DETAIL                                 -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="screen-card">
+    <div class="screen-label">
+      Komponen: Grid Tombol
+      <span class="tag">4×4 + KHUSUS</span>
+    </div>
+    <div class="screen-body">
+      <div class="wf">Grid tombol: 3 kolom utama
+
+┌─────┬─────┬─────┐
+│  C  │ CE  │  ÷  │  ← baris kontrol
+├─────┼─────┼─────┤
+│  7  │  8  │  9  │  ← baris 1
+├─────┼─────┼─────┤
+│  4  │  5  │  6  │  ← baris 2
+├─────┼─────┼─────┤
+│  1  │  2  │  3  │  ← baris 3
+├─────┴─────┼─────┤
+│     0     │  .  │  ← 0 = lebar 2 kolom
+└───────────┴─────┘
+            │  =  │  ← di luar grid utama
+└─────────────────┘
+┌─────┬─────┬─────┐
+│  +  │  -  │  ×  │  ← baris operator bawah
+└─────┴─────┴─────┘
+
+Tipe tombol:
+  [CTRL] = C, CE           → warna berbeda
+  [OPR]  = + - × ÷        → warna berbeda
+  [NUM]  = 0-9, .          → warna netral
+  [EQL]  = =               → warna aksen/utama</div>
+      <div class="annotations">
+        <div class="annotation-title">Spesifikasi</div>
+        <div class="annotation-item"><span class="bullet">①</span> 4 tipe tombol dengan warna berbeda sebagai penanda fungsi</div>
+        <div class="annotation-item"><span class="bullet">②</span> Tombol 0 selebar 2 kolom — lebih mudah ditekan</div>
+        <div class="annotation-item"><span class="bullet">③</span> Tombol = menonjol dengan warna aksen / berbeda</div>
+        <div class="annotation-item"><span class="bullet">④</span> Semua tombol memiliki efek hover dan active (press)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION DIVIDER 2                                  -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="section-label" style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#888780;white-space:nowrap;">State & Flow Summary</span>
+    <div style="flex:1;height:1px;background:#d3d1c7;"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- STATE TABLE                                        -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="screen-card full-width">
+    <div class="screen-label">
+      Tabel State — Tampilan Display per Kondisi
+      <span class="tag">5 STATE</span>
+    </div>
+    <div class="screen-body">
+      <table class="state-table">
+        <thead>
+          <tr>
+            <th>State</th>
+            <th>Sub Display</th>
+            <th>Main Display</th>
+            <th>Tombol Aktif</th>
+            <th>Contoh</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-idle">IDLE</span></td>
+            <td>kosong</td>
+            <td>"0"</td>
+            <td>Angka, C</td>
+            <td>Awal / setelah tekan C</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-input">INPUT_A</span></td>
+            <td>kosong</td>
+            <td>angka yang diketik</td>
+            <td>Angka, Operator, C, CE</td>
+            <td>Sub: "" / Main: "84"</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-op">OPERATOR_SET</span></td>
+            <td>angka1 + operator</td>
+            <td>angka1 (tidak berubah)</td>
+            <td>Angka, Operator (ganti), C</td>
+            <td>Sub: "84 +" / Main: "84"</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-input">INPUT_B</span></td>
+            <td>angka1 + operator</td>
+            <td>angka yang diketik</td>
+            <td>Angka, =, C, CE</td>
+            <td>Sub: "84 +" / Main: "36"</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-result">RESULT</span></td>
+            <td>ekspresi lengkap + =</td>
+            <td>hasil kalkulasi</td>
+            <td>Semua (lanjut/baru/reset)</td>
+            <td>Sub: "84 + 36 =" / Main: "120"</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-error">ERROR</span></td>
+            <td>ekspresi penyebab</td>
+            <td>"Error!"</td>
+            <td>Hanya C</td>
+            <td>Sub: "84 ÷ 0 =" / Main: "Error!"</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="legend">
+        <div class="legend-item"><span class="legend-sym">[ X ]</span> Tombol aktif / bisa ditekan</div>
+        <div class="legend-item"><span class="legend-sym">[---]</span> Tombol nonaktif / disabled</div>
+        <div class="legend-item"><span class="legend-sym">[ X*]</span> Tombol sedang aktif / terpilih</div>
+        <div class="legend-item"><span class="legend-sym">←</span>   Anotasi / keterangan elemen</div>
+        <div class="legend-item"><span class="legend-sym">┌─┐</span> Batas area / container</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- USER FLOW SUMMARY                                  -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="screen-card full-width">
+    <div class="screen-label">
+      User Flow — Skenario Kalkulasi Lengkap
+      <span class="tag">HAPPY PATH</span>
+    </div>
+    <div class="screen-body">
+      <div class="flow-row">
+        <div class="flow-box">
+          IDLE<br/>
+          <span class="flow-label">display "0"</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+          INPUT_A<br/>
+          <span class="flow-label">tekan angka</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+          OPERATOR_SET<br/>
+          <span class="flow-label">tekan +−×÷</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+          INPUT_B<br/>
+          <span class="flow-label">tekan angka</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+          RESULT<br/>
+          <span class="flow-label">tekan =</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+          IDLE<br/>
+          <span class="flow-label">tekan C</span>
+        </div>
+      </div>
+
+      <div class="flow-row" style="margin-top:16px;">
+        <div class="flow-box" style="background:#fafaf8;border-style:dashed;">
+          RESULT<br/>
+          <span class="flow-label">hasil ada</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="background:#EEEDFE;">
+          OPERATOR_SET<br/>
+          <span class="flow-label">tekan operator</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="font-size:10px;color:#5f5e5a;border:none;padding:4px 8px;">
+          kalkulasi berantai<br/>
+          <span class="flow-label">120 + ... = ?</span>
+        </div>
+      </div>
+
+      <div class="flow-row" style="margin-top:12px;">
+        <div class="flow-box" style="background:#FEF3F3;border-color:#F7C1C1;">
+          INPUT_B<br/>
+          <span class="flow-label">tekan = bagi 0</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="background:#F7C1C1;border-color:#A32D2D;color:#791F1F;">
+          ERROR<br/>
+          <span class="flow-label">tampil "Error!"</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+          IDLE<br/>
+          <span class="flow-label">tekan C</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end wireframe-grid -->
+
+</body>
+</html>

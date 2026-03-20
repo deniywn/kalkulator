@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalkulator</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --bg-page:     #0f0f11;
+  --bg-calc:     #18181c;
+  --bg-display:  #111114;
+  --bg-btn:      #222228;
+  --bg-btn-op:   #2a2a35;
+  --bg-btn-ctrl: #1e1e26;
+  --bg-btn-eq:   #4f46e5;
+  --bg-btn-eq-h: #6366f1;
+  --text-primary: #f0f0f4;
+  --text-secondary:#8884a0;
+  --text-display: #ffffff;
+  --text-sub:    #6b6880;
+  --text-op:     #a5b4fc;
+  --text-ctrl:   #f87171;
+  --text-eq:     #ffffff;
+  --text-error:  #f87171;
+  --border:      rgba(255,255,255,0.06);
+  --border-op:   rgba(165,180,252,0.15);
+  --shadow-calc: 0 32px 80px rgba(0,0,0,0.6),0 8px 24px rgba(0,0,0,0.4);
+  --shadow-btn:  0 2px 8px rgba(0,0,0,0.4);
+  --shadow-eq:   0 4px 20px rgba(79,70,229,0.4);
+  --radius-calc: 24px;
+  --radius-btn:  14px;
+  --font-mono:   'DM Mono', monospace;
+  --font-ui:     'DM Sans', sans-serif;
+  --tr:          all 0.12s cubic-bezier(0.4,0,0.2,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+body {
+  min-height: 100vh;
+  background: var(--bg-page);
+  background-image: radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);
+  background-size: 28px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-ui);
+  padding: 24px;
+}
+
+.calc-shell {
+  width: 100%;
+  max-width: 340px;
+  background: var(--bg-calc);
+  border-radius: var(--radius-calc);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-calc);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.calc-shell::before {
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:60%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(165,180,252,0.3),transparent);
+}
+
+#display-wrap {
+  background: var(--bg-display);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 18px 20px 14px;
+  min-height: 106px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 4px;
+  transition: border-color 0.2s;
+}
+#display-wrap.state-error { border-color:rgba(248,113,113,0.3); background:#160d0d; }
+#display-wrap.state-error #display-main { color:var(--text-error); }
+
+#display-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-sub);
+  letter-spacing: 0.02em;
+  min-height: 1em;
+  text-align: right;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#display-main {
+  font-family: var(--font-mono);
+  font-size: 3.2rem;
+  font-weight: 400;
+  color: var(--text-display);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-align: right;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: font-size 0.15s ease, color 0.2s;
+}
+
+@keyframes flash-in {
+  0%  { opacity:0.3; transform:scale(0.97); }
+  100%{ opacity:1;   transform:scale(1); }
+}
+#display-main.flash { animation: flash-in 0.2s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+.btn-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+}
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  background: var(--bg-btn);
+  background-image: linear-gradient(180deg,rgba(255,255,255,0.04) 0%,transparent 50%);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  font-weight: 400;
+  height: 72px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--tr);
+  box-shadow: var(--shadow-btn);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:hover { background-color:#2c2c34; border-color:rgba(255,255,255,0.1); transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.5); }
+.btn:active,.btn.key-press { transform:translateY(1px) scale(0.97); box-shadow:0 1px 4px rgba(0,0,0,0.4); background-color:#1c1c22; }
+
+.btn-op { background:var(--bg-btn-op); border-color:var(--border-op); color:var(--text-op); font-size:1.25rem; font-family:var(--font-mono); }
+.btn-op:hover { background-color:#32323f; }
+.btn-op.active-op { background:rgba(99,102,241,0.15); border-color:rgba(99,102,241,0.4); color:#818cf8; }
+
+.btn-ctrl { background:var(--bg-btn-ctrl); color:var(--text-ctrl); font-size:0.88rem; font-weight:500; letter-spacing:0.04em; }
+.btn-ctrl:hover { background-color:#262634; }
+
+.btn-eq { background:var(--bg-btn-eq); border-color:transparent; color:var(--text-eq); font-size:1.4rem; font-family:var(--font-mono); box-shadow:var(--shadow-eq); }
+.btn-eq:hover { background:var(--bg-btn-eq-h); box-shadow:0 6px 24px rgba(99,102,241,0.5); }
+.btn-eq:active,.btn-eq.key-press { background:#4338ca; box-shadow:0 2px 8px rgba(99,102,241,0.3); }
+
+.btn-zero { grid-column:span 2; justify-content:flex-start; padding-left:26px; }
+
+.ripple { position:absolute; border-radius:50%; background:rgba(255,255,255,0.08); transform:scale(0); animation:ripple-anim 0.45s linear forwards; pointer-events:none; }
+@keyframes ripple-anim { to { transform:scale(2.5); opacity:0; } }
+
+.kbd-hint { text-align:center; font-size:0.65rem; color:rgba(255,255,255,0.14); letter-spacing:0.06em; font-family:var(--font-mono); padding-bottom:2px; }
+
+@media(max-width:380px){ .calc-shell{padding:14px;} .btn{height:62px;} #display-main{font-size:2.6rem;} }
+@media(min-width:500px){ .calc-shell{max-width:360px;} .btn{height:76px;} }
+
+  </style>
+</head>
+<body>
+
+  <div class="calc-shell" role="application" aria-label="Kalkulator">
+
+    <!-- DISPLAY -->
+    <div id="display-wrap" aria-live="polite">
+      <div id="display-sub"  aria-label="ekspresi"></div>
+      <div id="display-main" aria-label="hasil">0</div>
+    </div>
+
+    <!-- BUTTON GRID -->
+    <div class="btn-grid" role="group" aria-label="Tombol kalkulator">
+
+      <!-- Baris 1: Control + Divide -->
+      <button class="btn btn-ctrl" data-action="clear"    aria-label="Reset">C</button>
+      <button class="btn btn-ctrl" data-action="entry"    aria-label="Hapus digit terakhir">CE</button>
+      <button class="btn btn-op"   data-action="operator" data-val="/" aria-label="Bagi">÷</button>
+
+      <!-- Baris 2 -->
+      <button class="btn btn-digit" data-action="digit" data-val="7" aria-label="7">7</button>
+      <button class="btn btn-digit" data-action="digit" data-val="8" aria-label="8">8</button>
+      <button class="btn btn-digit" data-action="digit" data-val="9" aria-label="9">9</button>
+
+      <!-- Baris 3 -->
+      <button class="btn btn-digit" data-action="digit" data-val="4" aria-label="4">4</button>
+      <button class="btn btn-digit" data-action="digit" data-val="5" aria-label="5">5</button>
+      <button class="btn btn-digit" data-action="digit" data-val="6" aria-label="6">6</button>
+
+      <!-- Baris 4 -->
+      <button class="btn btn-digit" data-action="digit" data-val="1" aria-label="1">1</button>
+      <button class="btn btn-digit" data-action="digit" data-val="2" aria-label="2">2</button>
+      <button class="btn btn-digit" data-action="digit" data-val="3" aria-label="3">3</button>
+
+      <!-- Baris 5: 0 (lebar 2), titik, = -->
+      <button class="btn btn-digit btn-zero" data-action="digit" data-val="0" aria-label="0">0</button>
+      <button class="btn btn-digit" data-action="digit" data-val="." aria-label="titik desimal">.</button>
+      <button class="btn btn-eq"    data-action="calculate" aria-label="Sama dengan">=</button>
+
+      <!-- Baris 6: Operator bawah -->
+      <button class="btn btn-op" data-action="operator" data-val="+" aria-label="Tambah">+</button>
+      <button class="btn btn-op" data-action="operator" data-val="-" aria-label="Kurang">−</button>
+      <button class="btn btn-op" data-action="operator" data-val="*" aria-label="Kali">×</button>
+
+    </div>
+
+    <!-- KEYBOARD HINT -->
+    <p class="kbd-hint">keyboard supported &nbsp;·&nbsp; esc = C &nbsp;·&nbsp; backspace = CE</p>
+
+  </div>
+
+  <script>
+// BasicOps: fungsi operasi aritmatika dasar
+// File ini didaftarkan ke OperationRegistry saat bootstrap di script.js
+// Untuk menambah operasi baru: buat file baru di ops/, daftarkan dengan cara yang sama
+
+const BasicOps = {
+  add:      (a, b) => a + b,
+  subtract: (a, b) => a - b,
+  multiply: (a, b) => a * b,
+  divide:   (a, b) => {
+    if (b === 0) throw new Error('DIVISION_BY_ZERO');
+    return a / b;
+  },
+};
+
+  </script>
+  <script>
+/* ============================================================
+   OPERATION REGISTRY
+   Tambah fitur baru? Cukup register di sini.
+   Tidak perlu ubah Calculator, Display, atau EventHandler.
+   ============================================================ */
+class OperationRegistry {
+  constructor() { this.ops = new Map(); }
+  register(name, fn) { this.ops.set(name, fn); }
+  execute(name, a, b) {
+    const fn = this.ops.get(name);
+    if (!fn) throw new Error('Operation not found: ' + name);
+    return fn(a, b);
+  }
+  has(name) { return this.ops.has(name); }
+}
+
+/* ============================================================
+   DISPLAY
+   ============================================================ */
+class Display {
+  constructor() {
+    this.mainEl = document.getElementById('display-main');
+    this.subEl  = document.getElementById('display-sub');
+    this.wrapEl = document.getElementById('display-wrap');
+  }
+  render(val) {
+    const str = String(val);
+    this.mainEl.textContent = str;
+    if      (str.length > 12) this.mainEl.style.fontSize = '1.5rem';
+    else if (str.length >  9) this.mainEl.style.fontSize = '2rem';
+    else if (str.length >  6) this.mainEl.style.fontSize = '2.6rem';
+    else                       this.mainEl.style.fontSize = '';
+    this.wrapEl.classList.remove('state-error');
+  }
+  showExpression(expr) { this.subEl.textContent = expr; }
+  clearExpression()    { this.subEl.textContent = ''; }
+  showError(expr) {
+    this.mainEl.textContent = 'Error';
+    this.mainEl.style.fontSize = '';
+    this.subEl.textContent  = expr;
+    this.wrapEl.classList.add('state-error');
+  }
+  flashResult() {
+    this.mainEl.classList.remove('flash');
+    void this.mainEl.offsetWidth;
+    this.mainEl.classList.add('flash');
+  }
+}
+
+/* ============================================================
+   CALCULATOR  — state machine + koordinator
+   ============================================================ */
+const STATES = { IDLE:'IDLE', INPUT_A:'INPUT_A', OPERATOR_SET:'OPERATOR_SET', INPUT_B:'INPUT_B', RESULT:'RESULT', ERROR:'ERROR' };
+
+class Calculator {
+  constructor(registry, display) {
+    this.registry = registry; this.display = display;
+    this.operand1 = null; this.operand2 = null; this.operator = null;
+    this.inputStr = '0'; this.lastOperand = null; this.lastOp = null;
+    this.state = STATES.IDLE;
+  }
+
+  appendDigit(digit) {
+    if (this.state === STATES.ERROR) return;
+    if (this.state === STATES.RESULT) {
+      this.inputStr = digit === '.' ? '0.' : digit;
+      this.operand1 = null; this.operator = null;
+      this.state = STATES.INPUT_A;
+      this.display.clearExpression();
+      this.display.render(this.inputStr); return;
+    }
+    if (this.state === STATES.OPERATOR_SET) {
+      this.inputStr = digit === '.' ? '0.' : digit;
+      this.state = STATES.INPUT_B;
+      this.display.render(this.inputStr); return;
+    }
+    if (digit === '.' && this.inputStr.includes('.')) return;
+    if (digit !== '.' && this.inputStr === '0') this.inputStr = digit;
+    else this.inputStr += digit;
+    if (this.state === STATES.IDLE) this.state = STATES.INPUT_A;
+    this.display.render(this.inputStr);
+  }
+
+  setOperator(op) {
+    if (this.state === STATES.ERROR) return;
+    if (this.state === STATES.INPUT_B) {
+      this._calculate(false);
+      if (this.state === STATES.ERROR) return;
+    }
+    if ([STATES.IDLE, STATES.INPUT_A, STATES.RESULT].includes(this.state)) {
+      this.operand1 = parseFloat(this.inputStr);
+    }
+    this.operator = op; this.state = STATES.OPERATOR_SET;
+    this.display.showExpression(this._fmt(this.operand1) + ' ' + this._sym(op));
+    this.display.render(this._fmt(this.operand1));
+  }
+
+  calculate() {
+    if (this.state === STATES.ERROR) return;
+    if (this.state === STATES.RESULT && this.lastOp && this.lastOperand !== null) {
+      this.operand1 = parseFloat(this.inputStr);
+      this.operator = this.lastOp; this.operand2 = this.lastOperand;
+      this._exec(true); return;
+    }
+    if (this.state !== STATES.INPUT_B) return;
+    this._calculate(true);
+  }
+
+  _calculate(show) {
+    this.operand2 = parseFloat(this.inputStr);
+    this.lastOperand = this.operand2; this.lastOp = this.operator;
+    this._exec(show);
+  }
+
+  _exec(show) {
+    const expr = this._fmt(this.operand1)+' '+this._sym(this.operator)+' '+this._fmt(this.operand2)+' =';
+    try {
+      let r = this.registry.execute(this.operator, this.operand1, this.operand2);
+      r = parseFloat(r.toPrecision(12));
+      this.inputStr = this._fmt(r);
+      if (show) {
+        this.display.showExpression(expr);
+        this.display.render(this.inputStr);
+        this.display.flashResult();
+        this.state = STATES.RESULT;
+      } else {
+        this.operand1 = r; this.state = STATES.OPERATOR_SET;
+      }
+    } catch(e) {
+      this.display.showError(expr); this.state = STATES.ERROR;
+    }
+  }
+
+  clear() {
+    this.operand1=null;this.operand2=null;this.operator=null;
+    this.inputStr='0';this.lastOperand=null;this.lastOp=null;
+    this.state=STATES.IDLE;
+    this.display.render('0');this.display.clearExpression();
+  }
+
+  clearEntry() {
+    if (this.state===STATES.ERROR||this.state===STATES.RESULT){this.clear();return;}
+    if (this.state===STATES.IDLE||this.state===STATES.OPERATOR_SET) return;
+    this.inputStr = (this.inputStr.length<=1||(this.inputStr.length===2&&this.inputStr[0]==='-'))
+      ? '0' : this.inputStr.slice(0,-1);
+    this.display.render(this.inputStr);
+  }
+
+  _fmt(n) {
+    if (n===null||n===undefined) return '0';
+    if (Math.abs(n)>=1e15||(n!==0&&Math.abs(n)<1e-10)) return n.toExponential(4);
+    const s = String(n);
+    return s;
+  }
+
+  _sym(op) { return {'+':'+','-':'−','*':'×','/':'÷'}[op]||op; }
+}
+
+/* ============================================================
+   EVENT HANDLER
+   ============================================================ */
+class EventHandler {
+  constructor(calc) { this.calc = calc; this._activeOp = null; }
+
+  bindButtons() {
+    document.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        this._handle(e.currentTarget);
+        this._ripple(e);
+      });
+    });
+  }
+
+  bindKeyboard() {
+    document.addEventListener('keydown', e => {
+      const k = e.key;
+      if (k>='0'&&k<='9')              { this._flash(k);   this.calc.appendDigit(k); }
+      else if (k==='.')                 { this._flash('.');  this.calc.appendDigit('.'); }
+      else if (k==='+')                 { this._flash('+');  this.calc.setOperator('+'); }
+      else if (k==='-')                 { this._flash('-');  this.calc.setOperator('-'); }
+      else if (k==='*')                 { this._flash('*');  this.calc.setOperator('*'); }
+      else if (k==='/')                 { e.preventDefault();this._flash('/'); this.calc.setOperator('/'); }
+      else if (k==='Enter'||k==='=')    { this._flash('=');  this.calc.calculate(); }
+      else if (k==='Backspace')         { this._flash('ce'); this.calc.clearEntry(); }
+      else if (k==='Escape')            { this._flash('c');  this.calc.clear(); }
+    });
+  }
+
+  _handle(btn) {
+    const {action,val} = btn.dataset;
+    if (action==='operator') this._setActiveOp(btn);
+    else if (action==='calculate'||action==='clear') this._setActiveOp(null);
+    switch(action) {
+      case 'digit':    this.calc.appendDigit(val); break;
+      case 'operator': this.calc.setOperator(val); break;
+      case 'calculate':this.calc.calculate();      break;
+      case 'clear':    this.calc.clear();          break;
+      case 'entry':    this.calc.clearEntry();     break;
+    }
+  }
+
+  _setActiveOp(btn) {
+    if (this._activeOp) this._activeOp.classList.remove('active-op');
+    this._activeOp = btn;
+    if (btn) btn.classList.add('active-op');
+  }
+
+  _flash(key) {
+    const sel = key==='c'?'[data-action="clear"]':key==='ce'?'[data-action="entry"]':key==='='?'[data-action="calculate"]':`[data-val="${key}"]`;
+    const el = document.querySelector(sel);
+    if (!el) return;
+    el.classList.add('key-press');
+    setTimeout(()=>el.classList.remove('key-press'),120);
+  }
+
+  _ripple(e) {
+    const btn=e.currentTarget, r=document.createElement('span');
+    const rect=btn.getBoundingClientRect(), size=Math.max(rect.width,rect.height);
+    r.className='ripple';
+    r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+    btn.appendChild(r);
+    setTimeout(()=>r.remove(),500);
+  }
+}
+
+/* ============================================================
+   BOOTSTRAP
+   Operasi didaftarkan dari BasicOps (ops/basicOps.js).
+   Untuk menambah operasi baru: buat file di ops/, daftarkan di sini.
+   Tidak perlu ubah Calculator, Display, atau EventHandler.
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  const registry = new OperationRegistry();
+
+  // Daftarkan operasi dasar dari ops/basicOps.js
+  registry.register('+', BasicOps.add);
+  registry.register('-', BasicOps.subtract);
+  registry.register('*', BasicOps.multiply);
+  registry.register('/', BasicOps.divide);
+
+  // Contoh cara daftarkan operasi lanjutan nanti:
+  // registry.register('%', ExtendedOps.percent);
+  // registry.register('sin', TrigOps.sin);
+
+  const display = new Display();
+  const calc    = new Calculator(registry, display);
+  const handler = new EventHandler(calc);
+  handler.bindButtons();
+  handler.bindKeyboard();
+});
+
+  </script>
+</body>
+</html>

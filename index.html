@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalkulator</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="calc-shell" role="application" aria-label="Kalkulator">
+
+    <!-- DISPLAY -->
+    <div id="display-wrap" aria-live="polite">
+      <div id="display-sub"  aria-label="ekspresi"></div>
+      <div id="display-main" aria-label="hasil">0</div>
+    </div>
+
+    <!-- BUTTON GRID -->
+    <div class="btn-grid" role="group" aria-label="Tombol kalkulator">
+
+      <!-- Baris 1: Control + Divide -->
+      <button class="btn btn-ctrl" data-action="clear"    aria-label="Reset">C</button>
+      <button class="btn btn-ctrl" data-action="entry"    aria-label="Hapus digit terakhir">CE</button>
+      <button class="btn btn-op"   data-action="operator" data-val="/" aria-label="Bagi">÷</button>
+
+      <!-- Baris 2 -->
+      <button class="btn btn-digit" data-action="digit" data-val="7" aria-label="7">7</button>
+      <button class="btn btn-digit" data-action="digit" data-val="8" aria-label="8">8</button>
+      <button class="btn btn-digit" data-action="digit" data-val="9" aria-label="9">9</button>
+
+      <!-- Baris 3 -->
+      <button class="btn btn-digit" data-action="digit" data-val="4" aria-label="4">4</button>
+      <button class="btn btn-digit" data-action="digit" data-val="5" aria-label="5">5</button>
+      <button class="btn btn-digit" data-action="digit" data-val="6" aria-label="6">6</button>
+
+      <!-- Baris 4 -->
+      <button class="btn btn-digit" data-action="digit" data-val="1" aria-label="1">1</button>
+      <button class="btn btn-digit" data-action="digit" data-val="2" aria-label="2">2</button>
+      <button class="btn btn-digit" data-action="digit" data-val="3" aria-label="3">3</button>
+
+      <!-- Baris 5: 0 (lebar 2), titik, = -->
+      <button class="btn btn-digit btn-zero" data-action="digit" data-val="0" aria-label="0">0</button>
+      <button class="btn btn-digit" data-action="digit" data-val="." aria-label="titik desimal">.</button>
+      <button class="btn btn-eq"    data-action="calculate" aria-label="Sama dengan">=</button>
+
+      <!-- Baris 6: Operator bawah -->
+      <button class="btn btn-op" data-action="operator" data-val="+" aria-label="Tambah">+</button>
+      <button class="btn btn-op" data-action="operator" data-val="-" aria-label="Kurang">−</button>
+      <button class="btn btn-op" data-action="operator" data-val="*" aria-label="Kali">×</button>
+
+    </div>
+
+    <!-- KEYBOARD HINT -->
+    <p class="kbd-hint">keyboard supported &nbsp;·&nbsp; esc = C &nbsp;·&nbsp; backspace = CE</p>
+
+  </div>
+
+  <!-- ops/ dimuat lebih dulu agar tersedia saat script.js bootstrap berjalan -->
+  <script src="ops/basicOps.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

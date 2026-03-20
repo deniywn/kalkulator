@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Diagram Kalkulator — Mermaid.js</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f5f4f0;
+      color: #2c2c2a;
+      padding: 40px 24px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #2c2c2a;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #5f5e5a;
+      margin-bottom: 40px;
+    }
+    .diagram-section {
+      background: #ffffff;
+      border: 1px solid #d3d1c7;
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    .diagram-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .diagram-number {
+      background: #EEEDFE;
+      color: #3C3489;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 6px;
+      padding: 4px 10px;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+    .diagram-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c2c2a;
+      margin-bottom: 4px;
+    }
+    .diagram-desc {
+      font-size: 13px;
+      color: #5f5e5a;
+      line-height: 1.6;
+    }
+    .mermaid-wrapper {
+      background: #fafaf8;
+      border: 1px solid #e8e6de;
+      border-radius: 8px;
+      padding: 24px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+    }
+    .mermaid {
+      display: flex;
+      justify-content: center;
+    }
+    .code-block {
+      background: #1e1e1e;
+      border-radius: 8px;
+      padding: 20px 24px;
+      overflow-x: auto;
+    }
+    .code-block pre {
+      font-family: 'Consolas', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #d4d4d4;
+      white-space: pre;
+    }
+    .code-label {
+      font-size: 12px;
+      color: #888780;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid #e8e6de;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Diagram Kalkulator Simple</h1>
+<p class="subtitle">7 diagram arsitektur dalam format Mermaid.js — PRD v2.0</p>
+
+<!-- ============================================================ -->
+<!-- DIAGRAM 1: FLOWCHART -->
+<!-- ============================================================ -->
+<div class="diagram-section">
+  <div class="diagram-header">
+    <span class="diagram-number">Diagram 1</span>
+    <div>
+      <div class="diagram-title">Flowchart — Alur Proses Utama</div>
+      <div class="diagram-desc">Langkah-langkah dari input angka pertama hingga hasil ditampilkan, termasuk percabangan error dan loop reset.</div>
+    </div>
+  </div>
+
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+flowchart TD
+    A([Mulai]) --> B[Input angka pertama\n tekan tombol 0-9]
+    B --> C[Pilih operator\n + - x ÷]
+    C --> D[Input angka kedua\n tekan tombol 0-9]
+    D --> E[Tekan tombol =]
+    E --> F{Bagi dengan nol?}
+    F -->|Ya| G[Tampilkan 'Error']
+    F -->|Tidak| H[Hitung hasil\n operand op operand]
+    H --> I[Tampilkan hasil\n di layar display]
+    G --> J([Selesai / Reset])
+    I --> J
+    J -->|Tekan C - reset| B
+
+    style A fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style J fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style B fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style D fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style C fill:#CECBF6,stroke:#534AB7,color:#3C3489
+    style E fill:#CECBF6,stroke:#534AB7,color:#3C3489
+    style F fill:#FAC775,stroke:#BA7517,color:#633806
+    style G fill:#F7C1C1,stroke:#A32D2D,color:#791F1F
+    style H fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    style I fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    </div>
+  </div>
+
+  <hr class="divider"/>
+  <p class="code-label">Kode Mermaid.js</p>
+  <div class="code-block"><pre>flowchart TD
+    A([Mulai]) --> B[Input angka pertama\n tekan tombol 0-9]
+    B --> C[Pilih operator\n + - x ÷]
+    C --> D[Input angka kedua\n tekan tombol 0-9]
+    D --> E[Tekan tombol =]
+    E --> F{Bagi dengan nol?}
+    F -->|Ya| G[Tampilkan 'Error']
+    F -->|Tidak| H[Hitung hasil\n operand op operand]
+    H --> I[Tampilkan hasil\n di layar display]
+    G --> J([Selesai / Reset])
+    I --> J
+    J -->|Tekan C - reset| B
+
+    style A fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style J fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style B fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style D fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style C fill:#CECBF6,stroke:#534AB7,color:#3C3489
+    style E fill:#CECBF6,stroke:#534AB7,color:#3C3489
+    style F fill:#FAC775,stroke:#BA7517,color:#633806
+    style G fill:#F7C1C1,stroke:#A32D2D,color:#791F1F
+    style H fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    style I fill:#9FE1CB,stroke:#0F6E56,color:#085041</pre></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DIAGRAM 2: ACTIVITY (SWIMLANE) -->
+<!-- ============================================================ -->
+<div class="diagram-section">
+  <div class="diagram-header">
+    <span class="diagram-number">Diagram 2</span>
+    <div>
+      <div class="diagram-title">Activity Diagram — Swimlane User vs Sistem</div>
+      <div class="diagram-desc">Memisahkan tanggung jawab antara aksi User dan respons otomatis Sistem JavaScript secara paralel.</div>
+    </div>
+  </div>
+
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+flowchart TD
+    subgraph USER["👤 Pengguna (User)"]
+        U1([Mulai]) --> U2[Tekan tombol angka]
+        U2 --> U4[Tekan tombol operator]
+        U4 --> U6[Tekan angka kedua]
+        U6 --> U7[Tekan tombol =]
+    end
+
+    subgraph SISTEM["⚙️ Sistem (JavaScript)"]
+        S1[Append angka ke display] --> S2[Simpan operand1 + operator]
+        S2 --> S3[Update display angka kedua]
+        S3 --> S4[Validasi dan kalkulasi]
+        S4 --> S5[Tampilkan hasil di display]
+    end
+
+    U2 --> S1
+    U4 --> S2
+    U6 --> S3
+    U7 --> S4
+    S5 --> DONE([Selesai])
+
+    style U1 fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style DONE fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style U2 fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style U4 fill:#CECBF6,stroke:#534AB7,color:#3C3489
+    style U6 fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style U7 fill:#CECBF6,stroke:#534AB7,color:#3C3489
+    style S1 fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    style S2 fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    style S3 fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    style S4 fill:#FAC775,stroke:#BA7517,color:#633806
+    style S5 fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    </div>
+  </div>
+
+  <hr class="divider"/>
+  <p class="code-label">Kode Mermaid.js</p>
+  <div class="code-block"><pre>flowchart TD
+    subgraph USER["👤 Pengguna (User)"]
+        U1([Mulai]) --> U2[Tekan tombol angka]
+        U2 --> U4[Tekan tombol operator]
+        U4 --> U6[Tekan angka kedua]
+        U6 --> U7[Tekan tombol =]
+    end
+
+    subgraph SISTEM["⚙️ Sistem (JavaScript)"]
+        S1[Append angka ke display] --> S2[Simpan operand1 + operator]
+        S2 --> S3[Update display angka kedua]
+        S3 --> S4[Validasi dan kalkulasi]
+        S4 --> S5[Tampilkan hasil di display]
+    end
+
+    U2 --> S1
+    U4 --> S2
+    U6 --> S3
+    U7 --> S4
+    S5 --> DONE([Selesai])
+
+    style U1 fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style DONE fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style U2 fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style U4 fill:#CECBF6,stroke:#534AB7,color:#3C3489
+    style U6 fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style U7 fill:#CECBF6,stroke:#534AB7,color:#3C3489
+    style S1 fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    style S2 fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    style S3 fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    style S4 fill:#FAC775,stroke:#BA7517,color:#633806
+    style S5 fill:#9FE1CB,stroke:#0F6E56,color:#085041</pre></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DIAGRAM 3: SEQUENCE -->
+<!-- ============================================================ -->
+<div class="diagram-section">
+  <div class="diagram-header">
+    <span class="diagram-number">Diagram 3</span>
+    <div>
+      <div class="diagram-title">Sequence Diagram — Komunikasi Antar Komponen</div>
+      <div class="diagram-desc">Urutan pesan antara User, UI/HTML, dan Engine JS dari klik pertama hingga hasil ditampilkan.</div>
+    </div>
+  </div>
+
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+sequenceDiagram
+    actor User
+    participant UI as UI / HTML
+    participant Engine as Engine JS
+
+    User->>UI: Klik tombol angka
+    UI->>Engine: appendDigit(n)
+    Engine-->>UI: updateDisplay(val)
+
+    User->>UI: Klik operator + - x ÷
+    UI->>Engine: setOperator(op)
+    Engine-->>UI: simpan operand1
+
+    User->>UI: Klik angka kedua
+    UI->>Engine: appendDigit(n)
+    Engine-->>UI: updateDisplay(val)
+
+    User->>UI: Klik tombol =
+    UI->>Engine: calculate()
+    Engine->>Engine: cek bagi nol
+    Engine-->>UI: return hasil atau Error
+    UI-->>User: Display diperbarui
+    </div>
+  </div>
+
+  <hr class="divider"/>
+  <p class="code-label">Kode Mermaid.js</p>
+  <div class="code-block"><pre>sequenceDiagram
+    actor User
+    participant UI as UI / HTML
+    participant Engine as Engine JS
+
+    User->>UI: Klik tombol angka
+    UI->>Engine: appendDigit(n)
+    Engine-->>UI: updateDisplay(val)
+
+    User->>UI: Klik operator + - x ÷
+    UI->>Engine: setOperator(op)
+    Engine-->>UI: simpan operand1
+
+    User->>UI: Klik angka kedua
+    UI->>Engine: appendDigit(n)
+    Engine-->>UI: updateDisplay(val)
+
+    User->>UI: Klik tombol =
+    UI->>Engine: calculate()
+    Engine->>Engine: cek bagi nol
+    Engine-->>UI: return hasil atau Error
+    UI-->>User: Display diperbarui</pre></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DIAGRAM 4: CLASS DIAGRAM -->
+<!-- ============================================================ -->
+<div class="diagram-section">
+  <div class="diagram-header">
+    <span class="diagram-number">Diagram 4</span>
+    <div>
+      <div class="diagram-title">Class Diagram — Struktur Kode JavaScript</div>
+      <div class="diagram-desc">Cetak biru tiga class utama beserta properti, method, dan relasi antar class.</div>
+    </div>
+  </div>
+
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+classDiagram
+    class Calculator {
+        +number operand1
+        +number operand2
+        +string operator
+        +string displayValue
+        +string currentState
+        +appendDigit(n) void
+        +setOperator(op) void
+        +calculate() number
+        +clear() void
+        +clearEntry() void
+    }
+
+    class Display {
+        +HTMLElement mainScreen
+        +HTMLElement subScreen
+        +render(val) void
+        +showExpression(expr) void
+        +showError() void
+    }
+
+    class EventHandler {
+        +Calculator calculator
+        +bindButtons() void
+        +bindKeyboard() void
+        +handleClick(e) void
+    }
+
+    Calculator ..> Display : menggunakan
+    EventHandler ..> Calculator : mengontrol
+    </div>
+  </div>
+
+  <hr class="divider"/>
+  <p class="code-label">Kode Mermaid.js</p>
+  <div class="code-block"><pre>classDiagram
+    class Calculator {
+        +number operand1
+        +number operand2
+        +string operator
+        +string displayValue
+        +string currentState
+        +appendDigit(n) void
+        +setOperator(op) void
+        +calculate() number
+        +clear() void
+        +clearEntry() void
+    }
+
+    class Display {
+        +HTMLElement mainScreen
+        +HTMLElement subScreen
+        +render(val) void
+        +showExpression(expr) void
+        +showError() void
+    }
+
+    class EventHandler {
+        +Calculator calculator
+        +bindButtons() void
+        +bindKeyboard() void
+        +handleClick(e) void
+    }
+
+    Calculator ..> Display : menggunakan
+    EventHandler ..> Calculator : mengontrol</pre></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DIAGRAM 5: STATE DIAGRAM -->
+<!-- ============================================================ -->
+<div class="diagram-section">
+  <div class="diagram-header">
+    <span class="diagram-number">Diagram 5</span>
+    <div>
+      <div class="diagram-title">State Diagram — Status Kalkulator</div>
+      <div class="diagram-desc">Lima status yang mengontrol perilaku setiap tombol beserta semua transisi yang mungkin terjadi.</div>
+    </div>
+  </div>
+
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+stateDiagram-v2
+    [*] --> IDLE
+
+    IDLE --> INPUT_A : tekan angka
+    INPUT_A --> INPUT_A : tambah digit
+    INPUT_A --> OPERATOR_SET : tekan operator
+
+    OPERATOR_SET --> OPERATOR_SET : ganti operator
+    OPERATOR_SET --> INPUT_B : tekan angka
+
+    INPUT_B --> INPUT_B : tambah digit
+    INPUT_B --> RESULT : tekan =
+    INPUT_B --> ERROR : tekan = dan bagi nol
+
+    RESULT --> OPERATOR_SET : tekan operator (lanjut)
+    RESULT --> INPUT_A : tekan angka (mulai baru)
+
+    IDLE --> IDLE : tekan C
+    INPUT_A --> IDLE : tekan C
+    OPERATOR_SET --> IDLE : tekan C
+    INPUT_B --> IDLE : tekan C
+    RESULT --> IDLE : tekan C
+    ERROR --> IDLE : tekan C
+    </div>
+  </div>
+
+  <hr class="divider"/>
+  <p class="code-label">Kode Mermaid.js</p>
+  <div class="code-block"><pre>stateDiagram-v2
+    [*] --> IDLE
+
+    IDLE --> INPUT_A : tekan angka
+    INPUT_A --> INPUT_A : tambah digit
+    INPUT_A --> OPERATOR_SET : tekan operator
+
+    OPERATOR_SET --> OPERATOR_SET : ganti operator
+    OPERATOR_SET --> INPUT_B : tekan angka
+
+    INPUT_B --> INPUT_B : tambah digit
+    INPUT_B --> RESULT : tekan =
+    INPUT_B --> ERROR : tekan = dan bagi nol
+
+    RESULT --> OPERATOR_SET : tekan operator (lanjut)
+    RESULT --> INPUT_A : tekan angka (mulai baru)
+
+    IDLE --> IDLE : tekan C
+    INPUT_A --> IDLE : tekan C
+    OPERATOR_SET --> IDLE : tekan C
+    INPUT_B --> IDLE : tekan C
+    RESULT --> IDLE : tekan C
+    ERROR --> IDLE : tekan C</pre></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DIAGRAM 6: COMPONENT DIAGRAM -->
+<!-- ============================================================ -->
+<div class="diagram-section">
+  <div class="diagram-header">
+    <span class="diagram-number">Diagram 6</span>
+    <div>
+      <div class="diagram-title">Component Diagram — Hubungan Antar File</div>
+      <div class="diagram-desc">Bagaimana index.html, style.css, dan script.js saling terhubung dan tanggung jawab masing-masing.</div>
+    </div>
+  </div>
+
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+flowchart TB
+    subgraph BROWSER["🌐 Browser Runtime"]
+        subgraph HTML["📄 index.html"]
+            H1[Struktur tombol 0-9 dan operator]
+            H2[Elemen display utama dan sub]
+            H3[Link ke CSS dan JS]
+        end
+
+        subgraph CSS["🎨 style.css"]
+            C1[Layout Grid tombol]
+            C2[Warna dan tipografi]
+            C3[Responsif mobile]
+            C4[Animasi hover]
+        end
+
+        subgraph JS["⚙️ script.js"]
+            J1[Logika kalkulasi]
+            J2[State management]
+            J3[Event listener tombol]
+            J4[Handler keyboard]
+        end
+    end
+
+    USER([👤 User]) -->|melihat dan klik| HTML
+    HTML -->|link stylesheet| CSS
+    HTML -->|script src| JS
+    JS -->|querySelector / getElementById| HTML
+    JS -->|innerHTML / addEventListener| HTML
+
+    style HTML fill:#E6F1FB,stroke:#185FA5,color:#0C447C
+    style CSS fill:#FAECE7,stroke:#993C1D,color:#712B13
+    style JS fill:#E1F5EE,stroke:#0F6E56,color:#085041
+    style USER fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    </div>
+  </div>
+
+  <hr class="divider"/>
+  <p class="code-label">Kode Mermaid.js</p>
+  <div class="code-block"><pre>flowchart TB
+    subgraph BROWSER["🌐 Browser Runtime"]
+        subgraph HTML["📄 index.html"]
+            H1[Struktur tombol 0-9 dan operator]
+            H2[Elemen display utama dan sub]
+            H3[Link ke CSS dan JS]
+        end
+
+        subgraph CSS["🎨 style.css"]
+            C1[Layout Grid tombol]
+            C2[Warna dan tipografi]
+            C3[Responsif mobile]
+            C4[Animasi hover]
+        end
+
+        subgraph JS["⚙️ script.js"]
+            J1[Logika kalkulasi]
+            J2[State management]
+            J3[Event listener tombol]
+            J4[Handler keyboard]
+        end
+    end
+
+    USER([👤 User]) -->|melihat dan klik| HTML
+    HTML -->|link stylesheet| CSS
+    HTML -->|script src| JS
+    JS -->|querySelector / getElementById| HTML
+    JS -->|innerHTML / addEventListener| HTML
+
+    style HTML fill:#E6F1FB,stroke:#185FA5,color:#0C447C
+    style CSS fill:#FAECE7,stroke:#993C1D,color:#712B13
+    style JS fill:#E1F5EE,stroke:#0F6E56,color:#085041
+    style USER fill:#D3D1C7,stroke:#888780,color:#2C2C2A</pre></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DIAGRAM 7: USE CASE -->
+<!-- ============================================================ -->
+<div class="diagram-section">
+  <div class="diagram-header">
+    <span class="diagram-number">Diagram 7</span>
+    <div>
+      <div class="diagram-title">Use Case Diagram — Aksi Pengguna</div>
+      <div class="diagram-desc">Delapan use case yang bisa dilakukan user beserta relasi include dan extend antar use case.</div>
+    </div>
+  </div>
+
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+flowchart LR
+    USER(["👤 User"])
+
+    subgraph SISTEM["Sistem Kalkulator"]
+        UC1([Input angka 0-9])
+        UC2([Input desimal .])
+        UC3([Pilih operator\n + - x ÷])
+        UC4([Hitung hasil =])
+        UC5([Reset penuh C])
+        UC6([Hapus entry CE])
+        UC7([Input via keyboard])
+        UC8([Lihat hasil atau error])
+    end
+
+    USER --> UC1
+    USER --> UC2
+    USER --> UC3
+    USER --> UC4
+    USER --> UC5
+    USER --> UC6
+    USER --> UC7
+    USER --> UC8
+
+    UC7 -.->|include| UC1
+    UC4 -.->|extend| UC8
+
+    style UC1 fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style UC2 fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style UC3 fill:#CECBF6,stroke:#534AB7,color:#3C3489
+    style UC4 fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    style UC5 fill:#F5C4B3,stroke:#993C1D,color:#712B13
+    style UC6 fill:#F5C4B3,stroke:#993C1D,color:#712B13
+    style UC7 fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style UC8 fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style USER fill:#FAC775,stroke:#BA7517,color:#633806
+    </div>
+  </div>
+
+  <hr class="divider"/>
+  <p class="code-label">Kode Mermaid.js</p>
+  <div class="code-block"><pre>flowchart LR
+    USER(["👤 User"])
+
+    subgraph SISTEM["Sistem Kalkulator"]
+        UC1([Input angka 0-9])
+        UC2([Input desimal .])
+        UC3([Pilih operator\n + - x ÷])
+        UC4([Hitung hasil =])
+        UC5([Reset penuh C])
+        UC6([Hapus entry CE])
+        UC7([Input via keyboard])
+        UC8([Lihat hasil atau error])
+    end
+
+    USER --> UC1
+    USER --> UC2
+    USER --> UC3
+    USER --> UC4
+    USER --> UC5
+    USER --> UC6
+    USER --> UC7
+    USER --> UC8
+
+    UC7 -.->|include| UC1
+    UC4 -.->|extend| UC8
+
+    style UC1 fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style UC2 fill:#B5D4F4,stroke:#185FA5,color:#0C447C
+    style UC3 fill:#CECBF6,stroke:#534AB7,color:#3C3489
+    style UC4 fill:#9FE1CB,stroke:#0F6E56,color:#085041
+    style UC5 fill:#F5C4B3,stroke:#993C1D,color:#712B13
+    style UC6 fill:#F5C4B3,stroke:#993C1D,color:#712B13
+    style UC7 fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style UC8 fill:#D3D1C7,stroke:#888780,color:#2C2C2A
+    style USER fill:#FAC775,stroke:#BA7517,color:#633806</pre></div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      fontSize: '14px',
+      fontFamily: "'Segoe UI', system-ui, sans-serif",
+      primaryColor: '#E6F1FB',
+      primaryTextColor: '#0C447C',
+      primaryBorderColor: '#185FA5',
+      lineColor: '#5f5e5a',
+      secondaryColor: '#EEEDFE',
+      tertiaryColor: '#E1F5EE',
+      background: '#ffffff',
+      mainBkg: '#ffffff',
+      nodeBorder: '#D3D1C7',
+      clusterBkg: '#fafaf8',
+      titleColor: '#2c2c2a',
+      edgeLabelBackground: '#ffffff',
+      sequenceNumberColor: '#ffffff',
+      actorBkg: '#B5D4F4',
+      actorBorder: '#185FA5',
+      actorTextColor: '#0C447C',
+      activationBkgColor: '#E1F5EE',
+      activationBorderColor: '#0F6E56',
+      signalColor: '#5f5e5a',
+      signalTextColor: '#2c2c2a',
+      labelBoxBkgColor: '#EEEDFE',
+      labelBoxBorderColor: '#534AB7',
+      labelTextColor: '#3C3489',
+      loopTextColor: '#2c2c2a',
+      noteBorderColor: '#BA7517',
+      noteBkgColor: '#FAEEDA',
+      noteTextColor: '#633806',
+      stateBkg: '#E6F1FB',
+      stateBorder: '#185FA5',
+      fillType0: '#B5D4F4',
+      fillType1: '#CECBF6',
+      fillType2: '#9FE1CB',
+      fillType3: '#FAC775',
+      fillType4: '#F5C4B3',
+      fillType5: '#D3D1C7',
+    },
+    flowchart: { curve: 'basis', padding: 20 },
+    sequence: { diagramMarginX: 40, diagramMarginY: 20, actorMargin: 80, width: 160, height: 50, boxMargin: 10, useMaxWidth: true },
+    stateDiagram: { useMaxWidth: true },
+    classDiagram: { useMaxWidth: true }
+  });
+</script>
+</body>
+</html>
